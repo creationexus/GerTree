@@ -58,15 +58,16 @@ public class GerTree {
 		y.add("+");
 		y.add(x);
 		y.add("33");
-		//System.out.println(a);
-		//System.out.println(func(a));
-		//System.out.println(func(z, z));
-		//System.out.println(func(a, a));
-		//System.out.println("RESULTADO="+func1(a, 0));
+		y.add("11");
+		y.add("11");
 		
-		//System.out.println("RESULTADO="+func1(x, 0));
+		System.out.println("RESULTADO="+func1(z, 0));
+		
+		System.out.println("RESULTADO="+func1(x, 0));
 		
 		System.out.println("RESULTADO="+func1(y, 0));
+		
+		System.out.println("RESULTADO="+func1(a, 0));
 		
 	}
 	
@@ -220,6 +221,7 @@ public class GerTree {
 		Object aux = null;
 		List l = null;
 		if(o instanceof List){
+			//OPERACIONES SOBRE RAMAS
 			switch(((List)o).get(0).toString()){
 			case("+"):
 				oN+=1;
@@ -230,7 +232,6 @@ public class GerTree {
 						l = (List)((List) o).get(i);
 						aux = func1(l, oN);
 						//RESPUESTA DE CONDICIONES INTERNAS
-						//Considera solo 2 elementos
 						sum += Integer.valueOf(aux.toString());
 						
 					}else{
@@ -240,28 +241,25 @@ public class GerTree {
 					}
 				}
 				return sum;
-			
 			case("?::"):
 				oN+=1;
 				//System.out.println("?::");
-				for(int i = 1; i < ((List)o).size(); i+=2){
+				for(int i = 1; i < ((List)o).size()-1; i+=2){
 					if(((List) o).get(i) instanceof ArrayList){
 						l = (List)((List) o).get(i);
 						aux = func1(l, oN);
 						//RESPUESTA DE CONDICIONES INTERNAS
 						if((Boolean)aux){
-							//Considera solo 3 elementos 1:condicion 2:true 3:false
-							return ((List)o).get(2).toString();
-						}else{
-							return ((List)o).get(3).toString();
+							//OBSOLETO: Considera solo 3 elementos 1:condicion 2:true 3:false
+							//Considera en posiciones impares las condiciones, i+1 a la condicion es TRUE y ultimo es FALSE
+							return ((List)o).get(i+1).toString();
 						}
 					}else{
 						aux = ((List) o).get(i);
 						func1(aux, oN);
 					}
-				}
-				break;
-			
+				}//NINGUNA CONDICION FUE TRUE ENTONCES RETORNA LA ULTIMA POSICION
+				return ((List)o).get(((List)o).size()-1).toString();
 			case(">"):
 				oN+=1;
 				//System.out.println(">");
@@ -312,7 +310,6 @@ public class GerTree {
 			return o;
 		}
 		//OPERACIONES DE RESOLUCION DE HOJAS
-		//System.out.println(oN+"====== "+((List)o).get(0).toString());
 		System.out.println(oN+"====== "+o);
 		List lR = (List)o;
 		switch(lR.get(0).toString()){
@@ -333,13 +330,6 @@ public class GerTree {
 				return false;
 			case("+"):
 				return Integer.valueOf(lR.get(1).toString())+Integer.valueOf(lR.get(2).toString());
-			case("?::"):
-				System.out.println(">>>"+lR.get(1));
-				System.out.println(">>>"+lR.get(2));
-				if(lR.get(1).equals(lR.get(2))){
-					return true;
-				}
-				return false;
 			default:
 				return o;
 		}
@@ -349,8 +339,6 @@ public class GerTree {
 	public static Boolean esHoja(List l){
 		for(int i = 1; i < l.size(); i++){
 			if(l.get(i) instanceof List){
-				//System.out.println("-------"+l);
-				//System.out.println("-------"+i);
 				return false;
 			}
 		}
