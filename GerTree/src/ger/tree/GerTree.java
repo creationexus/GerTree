@@ -47,19 +47,30 @@ public class GerTree {
 		List<Object> y = new ArrayList<>();
 		List<Object> z = new ArrayList<>();
 		
-		z.add(">");
+		
+		z.add("==");
 		z.add("1");
 		z.add("2");
-		
+		x.add("?::");
+		x.add(z);
+		x.add("11");
+		x.add("22");
+		y.add("+");
+		y.add(x);
+		y.add("33");
 		//System.out.println(a);
 		//System.out.println(func(a));
 		//System.out.println(func(z, z));
 		//System.out.println(func(a, a));
-		System.out.println("RESULTADO="+func1(a, 0));
+		//System.out.println("RESULTADO="+func1(a, 0));
+		
+		//System.out.println("RESULTADO="+func1(x, 0));
+		
+		System.out.println("RESULTADO="+func1(y, 0));
 		
 	}
 	
-	public static Object func(Object o, Object r){
+	/*public static Object func(Object o, Object r){
 		Object aux = null;
 		List l;
 		if(o instanceof List){
@@ -203,7 +214,7 @@ public class GerTree {
 		}
 		//System.out.println("RR2:"+o);
 		return o;
-	}
+	}*/
 	
 	public static Object func1(Object o, Integer oN){
 		Object aux = null;
@@ -212,31 +223,40 @@ public class GerTree {
 			switch(((List)o).get(0).toString()){
 			case("+"):
 				oN+=1;
+				Integer sum = 0;
 				//System.out.println("+");
 				for(int i = 1; i < ((List)o).size(); i++){
 					if(((List) o).get(i) instanceof List){
 						l = (List)((List) o).get(i);
 						aux = func1(l, oN);
-						System.out.println("+l "+aux+ " "+oN);
+						//RESPUESTA DE CONDICIONES INTERNAS
+						//Considera solo 2 elementos
+						sum += Integer.valueOf(aux.toString());
+						
 					}else{
 						aux = ((List) o).get(i);
-						//System.out.println("+o "+aux+" "+lvl);
+						sum += Integer.valueOf(aux.toString());
 						func1(aux, oN);
 					}
 				}
-				break;
+				return sum;
 			
 			case("?::"):
 				oN+=1;
 				//System.out.println("?::");
-				for(int i = 1; i < ((List)o).size(); i++){
+				for(int i = 1; i < ((List)o).size(); i+=2){
 					if(((List) o).get(i) instanceof ArrayList){
 						l = (List)((List) o).get(i);
 						aux = func1(l, oN);
-						System.out.println("??:l "+aux+" "+oN);
+						//RESPUESTA DE CONDICIONES INTERNAS
+						if((Boolean)aux){
+							//Considera solo 3 elementos 1:condicion 2:true 3:false
+							return ((List)o).get(2).toString();
+						}else{
+							return ((List)o).get(3).toString();
+						}
 					}else{
 						aux = ((List) o).get(i);
-						//System.out.println("??:o "+aux+" "+lvl);
 						func1(aux, oN);
 					}
 				}
@@ -252,7 +272,6 @@ public class GerTree {
 						System.out.println(">l "+aux+" "+oN);
 					}else{
 						aux = ((List) o).get(i);
-						//System.out.println(">o "+aux+" "+lvl);
 						func1(aux, oN);
 					}
 				}
@@ -268,7 +287,6 @@ public class GerTree {
 						System.out.println("<l "+aux+" "+oN);
 					}else{
 						aux = ((List) o).get(i);
-						//System.out.println("<o "+aux+" "+lvl);
 						func1(aux, oN);
 					}
 				}
@@ -283,7 +301,6 @@ public class GerTree {
 						System.out.println("<l "+aux+" "+oN);
 					}else{
 						aux = ((List) o).get(i);
-						//System.out.println("<o "+aux+" "+lvl);
 						func1(aux, oN);
 					}
 				}
@@ -294,8 +311,9 @@ public class GerTree {
 			//ESPECIAL EN LA PRIMERA POSICION
 			return o;
 		}
-		//ORACIONES DE RECORRIDOS
-		System.out.println(oN+"====== "+((List)o).get(0).toString());
+		//OPERACIONES DE RESOLUCION DE HOJAS
+		//System.out.println(oN+"====== "+((List)o).get(0).toString());
+		System.out.println(oN+"====== "+o);
 		List lR = (List)o;
 		switch(lR.get(0).toString()){
 			case("<"):
@@ -312,7 +330,16 @@ public class GerTree {
 				if(lR.get(1).equals(lR.get(2))){
 					return true;
 				}
-				return false;	
+				return false;
+			case("+"):
+				return Integer.valueOf(lR.get(1).toString())+Integer.valueOf(lR.get(2).toString());
+			case("?::"):
+				System.out.println(">>>"+lR.get(1));
+				System.out.println(">>>"+lR.get(2));
+				if(lR.get(1).equals(lR.get(2))){
+					return true;
+				}
+				return false;
 			default:
 				return o;
 		}
