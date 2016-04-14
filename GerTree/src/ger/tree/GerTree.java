@@ -61,11 +61,13 @@ public class GerTree {
 		y.add("11");
 		y.add("11");
 		
-		System.out.println("RESULTADO="+func1(z, 0));
+		System.out.print(a +"\n");
+		
+		/*System.out.println("RESULTADO="+func1(z, 0));
 		
 		System.out.println("RESULTADO="+func1(x, 0));
 		
-		System.out.println("RESULTADO="+func1(y, 0));
+		System.out.println("RESULTADO="+func1(y, 0)); */
 		
 		System.out.println("RESULTADO="+func1(a, 0));
 		
