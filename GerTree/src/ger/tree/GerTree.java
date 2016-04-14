@@ -302,6 +302,20 @@ public class GerTree {
 					}
 				}
 				break;
+			case ("&&"):
+				oN += 1;
+				// System.out.println("<");
+				for (int i = 1; i < ((List) o).size(); i++) {
+					if (((List) o).get(i) instanceof ArrayList) {
+						l = (List) ((List) o).get(i);
+						aux = func1(l, oN);
+						System.out.println("<l " + aux + " " + oN);
+					} else {
+						aux = ((List) o).get(i);
+						func1(aux, oN);
+					}
+				}
+				break;
 			}
 		} else {
 			// System.out.println("RR1:"+o); // VALORES LOCALES DE RESPUESTA NO
