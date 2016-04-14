@@ -33,16 +33,19 @@ public class GerTree {
 		List<Object> f = new ArrayList<>();
 		
 		c.add("<");
-		c.add("1");
+		c.add("4");
 		c.add("2");
+		c.add("1");
 		
 		e.add(">");
 		e.add("3");
 		e.add("4");
+		e.add("5");
 		
 		f.add("==");
 		f.add("4");
-		f.add("10");
+		f.add("4");
+		f.add("4");
 		
 		b.add("?::");
 		b.add(c);
@@ -65,6 +68,8 @@ public class GerTree {
 		List<Object> y = new ArrayList<>();
 		List<Object> z = new ArrayList<>();
 		
+		List<Object> t = new ArrayList<>();
+		
 		
 		z.add("==");
 		z.add("1");
@@ -82,12 +87,28 @@ public class GerTree {
 		System.out.print(a +"\n");
 		
 		/*System.out.println("RESULTADO="+func1(z, 0));
+=======
+		t.add("+");
+		t.add("1");
+		t.add("1");
+		t.add("1");
+		
+		System.out.println("RESULTADO="+func1(z, 0));
+>>>>>>> branch 'master' of https://github.com/creationexus/GerTree.git
 		
 		System.out.println("RESULTADO="+func1(x, 0));
 		
 		System.out.println("RESULTADO="+func1(y, 0)); */
 		
 		System.out.println("RESULTADO="+func1(a, 0));
+		
+		System.out.println("RESULTADO="+func1(c, 0));
+		
+		System.out.println("RESULTADO="+func1(e, 0));
+		
+		System.out.println("RESULTADO="+func1(f, 0));
+		
+		System.out.println("RESULTADO="+func1(t, 0));
 		
 	}
 	
@@ -297,18 +318,18 @@ public class GerTree {
 				
 			case("<"):
 				oN+=1;
+				Integer menor = Integer.valueOf(((List) o).get(1).toString());
 				//System.out.println("<");
 				for(int i = 1; i < ((List)o).size(); i++){
 					if(((List) o).get(i) instanceof ArrayList){
 						l = (List)((List) o).get(i);
 						aux = func1(l, oN);
-						System.out.println("<l "+aux+" "+oN);
 					}else{
 						aux = ((List) o).get(i);
 						func1(aux, oN);
 					}
 				}
-			break;
+				break;
 			case("=="):
 				oN+=1;
 				//System.out.println("<");
@@ -334,22 +355,41 @@ public class GerTree {
 		List lR = (List)o;
 		switch(lR.get(0).toString()){
 			case("<"):
-				if(Integer.valueOf(lR.get(1).toString())<Integer.valueOf(lR.get(2).toString())){
-					return true;
+				Integer menor = Integer.valueOf(lR.get(1).toString());
+				for(int i = 1; i < lR.size(); i++){
+					if(Integer.valueOf(lR.get(i).toString())>menor){
+						return false;
+					}else{
+						menor = Integer.valueOf(lR.get(i).toString()); 
+					}
 				}
-				return false;
+				return true;
 			case(">"):
-				if(Integer.valueOf(lR.get(1).toString())>Integer.valueOf(lR.get(2).toString())){
-					return true;
+				Integer mayor = 0;
+				for(int i = 1; i < lR.size(); i++){
+					if(Integer.valueOf(lR.get(i).toString())<mayor){
+						return false;
+					}else{
+						mayor = Integer.valueOf(lR.get(i).toString()); 
+					}
 				}
-				return false;
+				return true;
 			case("=="):
-				if(lR.get(1).equals(lR.get(2))){
-					return true;
+				Integer igual = Integer.valueOf(lR.get(1).toString());
+				for(int i = 1; i < lR.size(); i++){
+					if(!Integer.valueOf(lR.get(i).toString()).equals(igual)){
+						return false;
+					}else{
+						igual = Integer.valueOf(lR.get(i).toString()); 
+					}
 				}
-				return false;
+				return true;
 			case("+"):
-				return Integer.valueOf(lR.get(1).toString())+Integer.valueOf(lR.get(2).toString());
+				Integer suma = 0;
+				for(int i = 1; i < lR.size(); i++){
+					suma += Integer.valueOf(lR.get(i).toString()); 
+				}
+				return suma;
 			default:
 				return o;
 		}
