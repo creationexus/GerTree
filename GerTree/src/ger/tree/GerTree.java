@@ -5,10 +5,55 @@ import java.util.List;
 import com.google.gson.*;
 import java.lang.reflect.Type;
 import com.google.gson.reflect.TypeToken;
+import java.util.*;
 
 public class GerTree {
 
+	private static HashMap<String, Object> map = new HashMap<String, Object>();
+
 	public static void main(String[] args) {
+
+		map.put("@001001", "20"); // number
+		map.put("@001002", "0"); // choice, true or false as String ( 3. Dolor
+									// abdominal característico)
+		map.put("@001003", "0"); // choice, true or false as String ( 4.
+									// Lipasa/Amilasa x3 limite superior)
+		map.put("@001004", "1"); // choice, true or false as String ( 5. Estudio
+									// de imagenes informa Pnacreatitis aguda?)
+		map.put("@001005", "1"); // choice, true or false as String ( 6. Se
+									// descarta consumo de OH agudo)
+		map.put("@001006", "1"); // choice, true or false as String ( 7. Se
+									// descarta cirguia abdominal abierta
+									// previa)
+		map.put("@001007", "1"); // choice true or false as String ( 8. Se
+									// descarta cirugia bariatrica previa)
+		map.put("@001008", "10.13"); // number ( 9. pH)
+		map.put("@001009", "80.01"); // number ( 10. Presion arterial sistolica)
+		map.put("@00100A", "1"); // choice true or false as String ( 11.
+									// Responde a fluidos)
+		map.put("@00100B", "3"); // number (PaO2 SOLO en pacientes con
+									// requerimiento de O2)
+		map.put("@00100C", "0.001"); // number (13. Oxigeno suplementario)
+		map.put("@00100D", "1.2"); // number (14. Creatinina serica)
+		map.put("@00100E", "1"); // choice true or false as String (15.
+									// Ecografia abdominal con colelitiasis o
+									// barro biliar?)
+		map.put("@001010", "1"); // choice true or false as String (17. Se
+									// descarta Colangitis aguda)
+		map.put("@001011", "1"); // choice true or false as String (18. Se
+									// descarta diagnostico previo de
+									// Coledocolitiasis)
+		map.put("@001012", "1"); // choice true or false as String (19. Se
+									// descarta co-morbilidad que contraindique
+									// colesistectomia)
+		map.put("@129756", "1"); // choice true or false as String (20. Se
+									// descarta patologia aguda o cronica
+									// neurologica/psiquiatrica que impida al
+									// paciente dar su consentimiento)
+		map.put("@001013", "1"); // choice true or false as String (21. Se
+									// descarta embarazo)
+		map.put("@001014", "1"); // choice true or false as String (22. Paciente
+									// firmo el consentimiento informado)
 
 		String json = new String(
 				"{\"type\":\"Text\",\"label\":\"23. Paciente cumple con los criterios\",\"description\":\"\",\"conditions\":"
@@ -60,18 +105,19 @@ public class GerTree {
 					List<Object> JSONArgumentsArraySubList = JSONArgumentsArrayList.subList(argumentsOffset,
 							argumentsCount + 1);
 					if (JSONArgumentsArraySubList.size() > 0) {
-						Object expressionArray =  JSONArgumentsArraySubList.get(0);
+						Object expressionArray = JSONArgumentsArraySubList.get(0);
 						func1(expressionArray, 0);
-						/*System.out.print("expressionArray: " + expressionArray + "\n");
-						String operator = expressionArray.get(0).toString();
-						System.out.print("operator: " + operator + "\n"); */
+						/*
+						 * System.out.print("expressionArray: " +
+						 * expressionArray + "\n"); String operator =
+						 * expressionArray.get(0).toString(); System.out.print(
+						 * "operator: " + operator + "\n");
+						 */
 					}
 
 				}
 			}
 		}
-
-		System.out.print("\n -------------------Profe Logic ----------\n\n");
 
 		List<Object> a = new ArrayList<>();
 		List<Object> b = new ArrayList<>();
@@ -144,15 +190,17 @@ public class GerTree {
 		 * System.out.println("RESULTADO="+func1(y, 0));
 		 */
 
-	/*	System.out.println("RESULTADO=" + func1(a, 0));
-
-		System.out.println("RESULTADO=" + func1(c, 0));
-
-		System.out.println("RESULTADO=" + func1(e, 0));
-
-		System.out.println("RESULTADO=" + func1(f, 0));
-
-		System.out.println("RESULTADO=" + func1(t, 0)); */
+		/*
+		 * System.out.println("RESULTADO=" + func1(a, 0));
+		 * 
+		 * System.out.println("RESULTADO=" + func1(c, 0));
+		 * 
+		 * System.out.println("RESULTADO=" + func1(e, 0));
+		 * 
+		 * System.out.println("RESULTADO=" + func1(f, 0));
+		 * 
+		 * System.out.println("RESULTADO=" + func1(t, 0));
+		 */
 
 	}
 
@@ -329,12 +377,21 @@ public class GerTree {
 		List lR = (List) o;
 		switch (lR.get(0).toString()) {
 		case ("<"):
-			Integer menor = Integer.valueOf(lR.get(1).toString());
+			Integer menor;
+			menor = (lR.get(1).toString().startsWith("@")) ? (Integer) map.get(lR.get(1)) : Integer.valueOf(lR.get(1).toString());
+			if (menor == null){
+				throw new RuntimeException("number [<][Menor] is null");
+			}
 			for (int i = 1; i < lR.size(); i++) {
-				if (Integer.valueOf(lR.get(i).toString()) > menor) {
+				Integer evaluar;
+				evaluar = (lR.get(i).toString().startsWith("@")) ?  Integer.valueOf((String) map.get(lR.get(i))) : Integer.valueOf(lR.get(i).toString());			
+				if (evaluar == null){
+					throw new RuntimeException("number [<][Evaluar] is null");
+				}
+				if (evaluar > menor) {
 					return false;
 				} else {
-					menor = Integer.valueOf(lR.get(i).toString());
+					menor = evaluar;
 				}
 			}
 			return true;
