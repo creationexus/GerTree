@@ -73,6 +73,7 @@ public class GerTree {
 						+ "[\"==\",\"@001010\",\"1\"],[\"==\",\"@001011\",\"1\"],[\"==\",\"@001012\",\"1\"],"
 						+ "[\"==\",\"@129756\",\"1\"],[\"==\",\"@001013\",\"1\"],[\"==\",\"@001014\",\"1\"]]"
 						+ ",\"Si\",\"No\"]],[\"Disable\"]],\"options\":{},\"identifier\":\"3c9127\"}");
+		
 		Gson gson = new Gson();
 		JsonObject jobject = gson.fromJson(json, JsonObject.class);
 		JsonArray jArray = jobject.get("conditions").getAsJsonArray();
@@ -106,13 +107,8 @@ public class GerTree {
 							argumentsCount + 1);
 					if (JSONArgumentsArraySubList.size() > 0) {
 						Object expressionArray = JSONArgumentsArraySubList.get(0);
-						func1(expressionArray, 0);
-						/*
-						 * System.out.print("expressionArray: " +
-						 * expressionArray + "\n"); String operator =
-						 * expressionArray.get(0).toString(); System.out.print(
-						 * "operator: " + operator + "\n");
-						 */
+						
+						//func1(expressionArray, 0);
 					}
 
 				}
@@ -189,7 +185,8 @@ public class GerTree {
 		 * 
 		 * System.out.println("RESULTADO="+func1(y, 0));
 		 */
-
+		 System.out.println("RESULTADO=" + func1(a, 0));
+		 
 		/*
 		 * System.out.println("RESULTADO=" + func1(a, 0));
 		 * 
@@ -324,7 +321,8 @@ public class GerTree {
 
 			case ("<"):
 				oN += 1;
-				Integer menor = Integer.valueOf(((List) o).get(1).toString());
+				// Integer menor = Integer.valueOf(((List)
+				// o).get(1).toString());
 				// System.out.println("<");
 				for (int i = 1; i < ((List) o).size(); i++) {
 					if (((List) o).get(i) instanceof ArrayList) {
@@ -376,49 +374,55 @@ public class GerTree {
 		System.out.println(oN + "====== " + o);
 		List lR = (List) o;
 		switch (lR.get(0).toString()) {
-		case ("<"):
-			Integer menor;
-			menor = (lR.get(1).toString().startsWith("@")) ? (Integer) map.get(lR.get(1)) : Integer.valueOf(lR.get(1).toString());
-			if (menor == null){
+		case ("<"): //StrictlyAscending
+			Double menor;
+			menor = (lR.get(1).toString().startsWith("@")) ? Double.valueOf((String) map.get(lR.get(1)))
+					: Double.valueOf(lR.get(1).toString());
+			if (menor == null) {
 				throw new RuntimeException("number [<][Menor] is null");
 			}
 			for (int i = 1; i < lR.size(); i++) {
-				Integer evaluar;
-				evaluar = (lR.get(i).toString().startsWith("@")) ?  Integer.valueOf((String) map.get(lR.get(i))) : Integer.valueOf(lR.get(i).toString());			
-				if (evaluar == null){
+				Double evaluar;
+				evaluar = (lR.get(i).toString().startsWith("@")) ? Double.valueOf((String) map.get(lR.get(i)))
+						: Double.valueOf(lR.get(i).toString());
+				if (evaluar == null) {
 					throw new RuntimeException("number [<][Evaluar] is null");
 				}
-				if (evaluar > menor) {
+				// System.out.print("Evaluar: "+evaluar);
+				if (menor < evaluar) {
 					return false;
 				} else {
 					menor = evaluar;
 				}
 			}
 			return true;
-		case (">"):
-			Integer mayor = 0;
+		case (">"): //StrictlyDescending
+			Double mayor = (double) 0;
 			for (int i = 1; i < lR.size(); i++) {
-				if (Integer.valueOf(lR.get(i).toString()) < mayor) {
+				if (Double.valueOf(lR.get(i).toString()) < mayor) {
 					return false;
 				} else {
-					mayor = Integer.valueOf(lR.get(i).toString());
+					mayor = Double.valueOf(lR.get(i).toString());
 				}
 			}
 			return true;
 		case ("=="):
-			Integer igual = Integer.valueOf(lR.get(1).toString());
+			Double igual = (lR.get(1).toString().startsWith("@")) ? Double.valueOf((String) map.get(lR.get(1)))
+					: Double.valueOf(lR.get(1).toString());
 			for (int i = 1; i < lR.size(); i++) {
-				if (!Integer.valueOf(lR.get(i).toString()).equals(igual)) {
+				Double compareTo = (lR.get(i).toString().startsWith("@")) ? Double.valueOf((String) map.get(lR.get(i)))
+						: Double.valueOf(lR.get(i).toString());
+				if (!compareTo.equals(igual)) {
 					return false;
 				} else {
-					igual = Integer.valueOf(lR.get(i).toString());
+					igual = compareTo;
 				}
 			}
 			return true;
 		case ("+"):
-			Integer suma = 0;
+			Double suma = (double) 0;
 			for (int i = 1; i < lR.size(); i++) {
-				suma += Integer.valueOf(lR.get(i).toString());
+				suma += Double.valueOf(lR.get(i).toString());
 			}
 			return suma;
 		default:
