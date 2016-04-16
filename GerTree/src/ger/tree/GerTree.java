@@ -14,9 +14,9 @@ public class GerTree {
 	public static void main(String[] args) {
 
 		map.put("@001001", "20"); // number
-		map.put("@001002", "0"); // choice, true or false as String ( 3. Dolor
+		map.put("@001002", "1"); // choice, true or false as String ( 3. Dolor
 									// abdominal característico)
-		map.put("@001003", "0"); // choice, true or false as String ( 4.
+		map.put("@001003", "1"); // choice, true or false as String ( 4.
 									// Lipasa/Amilasa x3 limite superior)
 		map.put("@001004", "1"); // choice, true or false as String ( 5. Estudio
 									// de imagenes informa Pnacreatitis aguda?)
@@ -31,7 +31,7 @@ public class GerTree {
 		map.put("@001009", "80.01"); // number ( 10. Presion arterial sistolica)
 		map.put("@00100A", "1"); // choice true or false as String ( 11.
 									// Responde a fluidos)
-		map.put("@00100B", "3"); // number (PaO2 SOLO en pacientes con
+		map.put("@00100B", "83"); // number (PaO2 SOLO en pacientes con
 									// requerimiento de O2)
 		map.put("@00100C", "0.001"); // number (13. Oxigeno suplementario)
 		map.put("@00100D", "1.2"); // number (14. Creatinina serica)
@@ -74,10 +74,38 @@ public class GerTree {
 						+ "[\"==\",\"@129756\",\"1\"],[\"==\",\"@001013\",\"1\"],[\"==\",\"@001014\",\"1\"]]"
 						+ ",\"Si\",\"No\"]],[\"Disable\"]],\"options\":{},\"identifier\":\"3c9127\"}");
 		
+		
+		
+		
+		/*json = new String(
+				"{\"type\":\"Text\",\"label\":\"23. Paciente cumple con los criterios\",\"description\":\"\",\"conditions\":"
+						+ "[[\"Assign\",[\"?::\",[\"&&\",\"0\",\"1\"]"
+						+ ",[\"/\",\"10\",\"5\"],[\"+\",\"1\",\"1\"]]],[\"Disable\"]],\"options\":{},\"identifier\":\"3c9127\"}");
+		
+		
+		json = new String(
+				"{\"type\":\"Text\",\"label\":\"23. Paciente cumple con los criterios\",\"description\":\"\",\"conditions\":"
+						+ "[[\"Assign\",[\"<\",[\"+\",[\"?::\",[\"&&\",[\"<\",\"7.301\",\"@001008\"],"
+				+ "[\"<\",\"90.01\",\"@001009\"]],\"0\",[\"&&\",[\"<\",\"7.301\",\"@001008\"],"
+				+ "[\"<\",\"@001009\",\"90.01\"],[\"==\",\"@00100A\",\"1\"]],\"1\",\"2\"],"
+				+ "[\"?::\",[\"<\",[\"*\",\"@00100B\",[\"/\",[\"?::\",[\"<\",\"@00100C\",\"0.01\"],\"0.21\","
+				+ "[\"<\",\"@00100C\",\"2.01\"],\"0.25\",[\"<\",\"@00100C\",\"4.01\"],\"0.3\","
+				+ "[\"<\",\"@00100C\",\"8.01\"],\"0.4\",\"0.5\"]]],\"301\"],\"2\","
+				+ "[\"<\",[\"*\",\"@00100B\",[\"/\",[\"?::\",[\"<\",\"@00100C\",\"0.01\"]"
+				+ ",\"0.21\",[\"<\",\"@00100C\",\"2.01\"],\"0.25\",[\"<\",\"@00100C\",\"4.01\"]"
+				+ ",\"0.3\",[\"<\",\"@00100C\",\"8.01\"],\"0.4\",\"0.5\"]]],\"400\"],\"1\",\"0\"],"
+				+ "[\"?::\",[\"<\",\"@00100D\",\"1.4\"],\"0\",\"1\"]],\"2\"]],[\"Disable\"]],\"options\":{},\"identifier\":\"3c9127\"}");*/
+		
+		/*json = new String(
+				"{\"type\":\"Text\",\"label\":\"23. Paciente cumple con los criterios\",\"description\":\"\",\"conditions\":"
+						+ "[[\"Assign\",[\"&&\",[\"<\",\"7.301\",\"@001008\"],"
+				+ "[\"<\",\"@001009\",\"90.01\"],[\"==\",\"@00100A\",\"1\"]]],[\"Disable\"]],\"options\":{},\"identifier\":\"3c9127\"}");*/
+		
 		Gson gson = new Gson();
 		JsonObject jobject = gson.fromJson(json, JsonObject.class);
 		JsonArray jArray = jobject.get("conditions").getAsJsonArray();
 		System.out.print("json array: " + jArray.toString() + "\n");
+		
 		System.out.print("json array count: " + jArray.size() + "\n");
 		if (jArray.size() > 0) {
 			// conditions
@@ -108,7 +136,8 @@ public class GerTree {
 					if (JSONArgumentsArraySubList.size() > 0) {
 						Object expressionArray = JSONArgumentsArraySubList.get(0);
 						
-						//func1(expressionArray, 0);
+						System.out.println(expressionArray);
+						System.out.println(func1(expressionArray, 0));
 					}
 
 				}
@@ -122,12 +151,12 @@ public class GerTree {
 		List<Object> e = new ArrayList<>();
 		List<Object> f = new ArrayList<>();
 
-		c.add("<");
+		c.add("+");
 		c.add("4");
 		c.add("2");
 		c.add("1");
 
-		e.add(">");
+		e.add("<");
 		e.add("3");
 		e.add("4");
 		e.add("5");
@@ -137,10 +166,10 @@ public class GerTree {
 		f.add("4");
 		f.add("4");
 
-		b.add("?::");
+		b.add(">");
 		b.add(c);
-		b.add("5");
-		b.add("6");
+		b.add("9");
+		b.add("4");
 
 		d.add("?::");
 		d.add(e);
@@ -172,7 +201,7 @@ public class GerTree {
 		y.add("11");
 		y.add("11");
 
-		System.out.print(a + "\n");
+		//System.out.print(a + "\n");
 
 		/*
 		 * System.out.println("RESULTADO="+func1(z, 0)); ======= t.add("+");
@@ -185,7 +214,10 @@ public class GerTree {
 		 * 
 		 * System.out.println("RESULTADO="+func1(y, 0));
 		 */
-		 System.out.println("RESULTADO=" + func1(a, 0));
+
+		//System.out.println("RESULTADO=" + func1(a, 0));
+		
+		//System.out.println("RESULTADO=" + func1(b, 0));
 		 
 		/*
 		 * System.out.println("RESULTADO=" + func1(a, 0));
@@ -266,25 +298,68 @@ public class GerTree {
 			switch (((List) o).get(0).toString()) {
 			case ("+"):
 				oN += 1;
-				Integer sum = 0;
+				Double sum = 0.0;
+				for (int i = 1; i < ((List) o).size(); i++) {
+					if (((List) o).get(i) instanceof List) {
+						l = (List) ((List) o).get(i);
+						
+						
+						
+						aux = func1(l, oN);
+						
+						System.out.println("!!!!!!!!!!!!!!!+"+aux+" "+o);
+						// RESPUESTA DE CONDICIONES INTERNAS
+						sum += Double.valueOf(aux.toString());
+
+					} else {
+						aux = ((List) o).get(i);
+						System.out.println("!!!!!!!!!!!!!!!+"+aux+" "+o);
+						sum += Double.valueOf(aux.toString());
+						//func1(aux, oN);
+					}
+				}
+				System.out.println("+"+sum);
+				return sum;
+			case ("/"):
+				oN += 1;
+				Double div = 1.0;
+				for (int i = 1; i < ((List) o).size(); i++) {
+					if (((List) o).get(i) instanceof List) {
+						l = (List) ((List) o).get(i);
+						aux = func1(l, oN);
+						// RESPUESTA DE CONDICIONES INTERNAS
+						div /= Double.valueOf(aux.toString());
+
+					} else {
+						aux = ((List) o).get(i);
+						div /= Double.valueOf(aux.toString());
+						//func1(aux, oN);
+					}
+				}
+				return div;
+			case ("*"):
+				oN += 1;
+				Double multi = 1.0;
 				// System.out.println("+");
 				for (int i = 1; i < ((List) o).size(); i++) {
 					if (((List) o).get(i) instanceof List) {
 						l = (List) ((List) o).get(i);
 						aux = func1(l, oN);
 						// RESPUESTA DE CONDICIONES INTERNAS
-						sum += Integer.valueOf(aux.toString());
+						multi *= Double.valueOf(aux.toString());
 
 					} else {
-						aux = ((List) o).get(i);
-						sum += Integer.valueOf(aux.toString());
-						func1(aux, oN);
+						aux = ((List) o).get(i).toString().startsWith("@")?map.get(((List) o).get(i).toString()):((List) o).get(i).toString();
+						multi *= Double.valueOf(aux.toString());
+						//func1(aux, oN);
 					}
 				}
-				return sum;
+				System.out.println("*"+multi);
+				return multi;
 			case ("?::"):
 				oN += 1;
 				// System.out.println("?::");
+				System.out.println("############################################################"+(List) o);
 				for (int i = 1; i < ((List) o).size() - 1; i += 2) {
 					if (((List) o).get(i) instanceof ArrayList) {
 						l = (List) ((List) o).get(i);
@@ -295,79 +370,155 @@ public class GerTree {
 							// 2:true 3:false
 							// Considera en posiciones impares las condiciones,
 							// i+1 a la condicion es TRUE y ultimo es FALSE
-							return ((List) o).get(i + 1).toString();
+							//return ((List) o).get(i + 1).toString();
+							//System.out.println(">>>>>>>>>><"+((List) o).get(i + 1).toString());
+							System.out.println("############################################################TRUE+"+((List) o).get(i + 1));
+							return func1(((List) o).get(i + 1), oN);
 						}
 					} else {
 						aux = ((List) o).get(i);
-						func1(aux, oN);
+						//func1(aux, oN);
 					}
 				} // NINGUNA CONDICION FUE TRUE ENTONCES RETORNA LA ULTIMA
 					// POSICION
-				return ((List) o).get(((List) o).size() - 1).toString();
+				System.out.println("############################################################FALSE+"+((List) o).get(((List) o).size() - 1));
+				return func1(((List) o).get(((List) o).size() - 1), oN);
 			case (">"):
 				oN += 1;
-				// System.out.println(">");
+				Double menor = 0.0;
 				for (int i = 1; i < ((List) o).size(); i++) {
 					if (((List) o).get(i) instanceof ArrayList) {
 						l = (List) ((List) o).get(i);
 						aux = func1(l, oN);
-						System.out.println(">l " + aux + " " + oN);
+						if(i==1)
+							menor = Double.valueOf(aux.toString());
+						if(menor<=(Double)aux){
+							return false;
+						}else{
+							menor = (Double)aux;
+						}
 					} else {
-						aux = ((List) o).get(i);
-						func1(aux, oN);
+						aux = ((List) o).get(i).toString().startsWith("@")?Double.valueOf(map.get(((List) o).get(i).toString()).toString()):Double.valueOf(((List) o).get(i).toString());
+						if(i==1)
+							menor = Double.valueOf(aux.toString()); 
+						if(menor<=(Double)aux){
+							return false;
+						}else{
+							menor = (Double)aux;
+						}
+						//func1(aux, oN);
 					}
 				}
-				break;
+				return true;
 
 			case ("<"):
 				oN += 1;
-				// Integer menor = Integer.valueOf(((List)
-				// o).get(1).toString());
-				// System.out.println("<");
+				Double mayor = 0.0;
 				for (int i = 1; i < ((List) o).size(); i++) {
 					if (((List) o).get(i) instanceof ArrayList) {
 						l = (List) ((List) o).get(i);
 						aux = func1(l, oN);
+						if(mayor>=(Double)aux){
+							System.out.println("<"+((List) o)+"----------- FALSE");							
+							return false;
+						}else{
+							mayor = (Double)aux;
+						}
 					} else {
-						aux = ((List) o).get(i);
-						func1(aux, oN);
+						aux = ((List) o).get(i).toString().startsWith("@")?Double.valueOf(map.get(((List) o).get(i).toString()).toString()):Double.valueOf(((List) o).get(i).toString());
+						if(mayor>=(Double)aux){
+							System.out.println("<"+((List) o)+"----------- FALSE");
+							return false;
+						}else{
+							mayor = (Double)aux;
+						}
+						//func1(aux, oN);
 					}
 				}
-				break;
+				
+				System.out.println("<"+((List) o)+" true");
+				return true;
 			case ("=="):
 				oN += 1;
 				// System.out.println("<");
+				Object eq = 0.0;
 				for (int i = 1; i < ((List) o).size(); i++) {
 					if (((List) o).get(i) instanceof ArrayList) {
 						l = (List) ((List) o).get(i);
-						aux = func1(l, oN);
-						System.out.println("<l " + aux + " " + oN);
+						aux = Double.valueOf(func1(l, oN).toString());
+						
+						if(i==1)
+							eq = aux.toString().startsWith("@")?map.get(aux.toString()):aux;
+						if(!eq.equals(aux)){
+							return false;
+						}
 					} else {
-						aux = ((List) o).get(i);
-						func1(aux, oN);
+						aux = ((List) o).get(i).toString().startsWith("@")?map.get(((List) o).get(i).toString()):((List) o).get(i);
+						if(i==1)
+							eq = aux.toString().startsWith("@")?map.get(aux.toString()):aux;
+						if(!eq.equals(aux)){
+							return false;
+						}
+						//func1(aux, oN);
 					}
 				}
-				break;
+				return true;
 			case ("&&"):
 				oN += 1;
-				// System.out.println("<");
+				Boolean and = true;
 				for (int i = 1; i < ((List) o).size(); i++) {
 					if (((List) o).get(i) instanceof ArrayList) {
 						l = (List) ((List) o).get(i);
 						aux = func1(l, oN);
-						System.out.println("<l " + aux + " " + oN);
+						aux = aux.toString().startsWith("@")?map.get(aux.toString()).toString():aux.toString();
+						if(aux.toString().startsWith("0")||aux.toString().startsWith("1"))
+							and = and&&Boolean.valueOf(aux.toString().compareTo("1")==0?true:false);
+						else
+							and = and&&Boolean.valueOf(aux.toString());
 					} else {
-						aux = ((List) o).get(i);
-						func1(aux, oN);
+						aux = ((List) o).get(i).toString().startsWith("@")?map.get(((List) o).get(i).toString()).toString():((List) o).get(i).toString();
+						
+						if(aux.toString().startsWith("0")||aux.toString().startsWith("1"))
+							and = and&&Boolean.valueOf(aux.toString().compareTo("1")==0?true:false);
+						else
+							and = and&&Boolean.valueOf(aux.toString());
+						//func1(aux, oN);
 					}
 				}
-				break;
+				System.out.println("AND ==============="+and+o);
+				return and;
+			case ("||"):
+				oN += 1;
+				Boolean or = false;
+				for (int i = 1; i < ((List) o).size(); i++) {
+					if (((List) o).get(i) instanceof ArrayList) {
+						l = (List) ((List) o).get(i);
+						aux = func1(l, oN);
+						if(aux.toString().startsWith("0")||aux.toString().startsWith("1"))
+							or = or||Boolean.valueOf(aux.toString().compareTo("1")==0?true:false);
+						else
+							or = or||Boolean.valueOf(aux.toString());
+					} else {
+						aux = ((List) o).get(i);
+						if(aux.toString().startsWith("0")||aux.toString().startsWith("1"))
+							or = or||Boolean.valueOf(aux.toString().compareTo("1")==0?true:false);
+						else
+							or = or||Boolean.valueOf(aux.toString());
+						//func1(aux, oN);
+					}
+				}
+				System.out.println("|| ========="+or+" "+o);
+				return or;
 			}
 		} else {
 			// System.out.println("RR1:"+o); // VALORES LOCALES DE RESPUESTA NO
 			// SON CAPTURADOS PORQUE NO ENTRAN EN LOS CASE, YA QUE NO CONTIENEN
 			// EL SIMBOLO
 			// ESPECIAL EN LA PRIMERA POSICION
+			if(String.valueOf(o).indexOf("@")==0){
+				return map.get(o.toString());
+			}
+			
 			return o;
 		}
 		// OPERACIONES DE RESOLUCION DE HOJAS
@@ -389,7 +540,7 @@ public class GerTree {
 					throw new RuntimeException("number [<][Evaluar] is null");
 				}
 				// System.out.print("Evaluar: "+evaluar);
-				if (menor < evaluar) {
+				if (menor > evaluar) {
 					return false;
 				} else {
 					menor = evaluar;
@@ -425,10 +576,24 @@ public class GerTree {
 				suma += Double.valueOf(lR.get(i).toString());
 			}
 			return suma;
+		case ("*"):
+			Double multi = (double) 1;
+			for (int i = 1; i < lR.size(); i++) {
+				multi *= Double.valueOf(lR.get(i).toString());
+			}
+			return multi;
+		case ("/"):
+			Double div = (double) 1;
+			for (int i = 1; i < lR.size(); i++) {
+				div = Double.valueOf(lR.get(i).toString()) / div;
+			}
+			return div;
 		default:
 			return o;
 		}
-
+		
+		//}
+		//return o;
 	}
 
 	public static Boolean esHoja(List l) {
